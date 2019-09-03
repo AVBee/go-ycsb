@@ -22,9 +22,9 @@ const (
 
 	defaultURI = "mongodb://localhost:27017"
 	defaultNS  = "ycsb.ycsb"
-	defaultUsr = "root"
+	defaultUsr = ""
 	defaultPassW  = ""
-	defaultAuth = "admin"
+	defaultAuth = ""
 )
 
 type mongoDB struct {
@@ -143,13 +143,13 @@ func (c mongodbCreator) Create(p *properties.Properties) (ycsb.DB, error) {
 	defer cancel()
 
 	cred := options.Client()
-
+	if dbAuth !=""{
 	cred.Auth = &options.Credential{
 		Username:   usr,
 		Password:   passw,
 		AuthSource: dbAuth,
 	}
-
+}
 	cred.ApplyURI(uri)
 	cli, err := mongo.NewClient(cred)
 
